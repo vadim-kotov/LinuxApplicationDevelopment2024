@@ -114,11 +114,11 @@ int main(int argc, char **argv)
         {
             if(fcol < (int)strlen(lines[line]))
             {
-                wprintw(win, "%4d:%.*s", line, NCOLS - 5, lines[line] + fcol);
+                wprintw(win, "%4d:%.*s", line + 1, NCOLS - 5, lines[line] + fcol);
             }
             else
             {
-                wprintw(win, "%4d:\n", line);
+                wprintw(win, "%4d:\n", line + 1);
             }
         }
 
