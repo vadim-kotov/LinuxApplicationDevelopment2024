@@ -34,11 +34,6 @@ int main(int argc, char **argv)
 		return 1;
 	}	
 
-	if(args == NULL)
-	{
-		perror("Memory allocation error ");
-		return 1;
-	}
 	for(i = 1; i < argc; i++)
 	{
 		if(get_arg(argv[0], argv[i], &(args[i-1])))

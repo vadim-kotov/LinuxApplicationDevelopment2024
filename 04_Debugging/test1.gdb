@@ -1,5 +1,5 @@
 set pagination off
-b 67 if i % 5 == 0
+b 63 if i % 5 == 0
 command 1
 	printf "@@@ %ld %ld %ld %ld\n", M, N, S, i
 	cont
