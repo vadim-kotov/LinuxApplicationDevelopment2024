@@ -45,11 +45,6 @@ int main(int argc, char **argv)
 		regfree(&regex);
 		return 1;
 	}
-
-	for(i = 0; i < MAXGR && bags[i].rm_so >= 0; i++)
-	{
-		b = bags[i].rm_so; e = bags[i].rm_eo;
-	}
 	
 	subs_br = calloc(strlen(subs) + strlen(string) * MAX_BACKREF, sizeof(char));
 	if(subs_br == NULL)
