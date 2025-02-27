@@ -29,13 +29,12 @@ int main(int argc, char **argv)
 
 	string = argv[3];
 	subs = argv[2];
-	printf("%s\n", subs);
 
 	if((errcode = regcomp(&regex, argv[1], REG_EXTENDED)))
 	{
 		regerror(errcode, &regex, errbuf, ERRBUF_SIZE);
 		fprintf(stderr, "Regular expression compilation error: %s\n", errbuf);
-//		regfree(&regex);
+		regfree(&regex);
 		return 1;
 	}
 
@@ -50,7 +49,6 @@ int main(int argc, char **argv)
 	for(i = 0; i < MAXGR && bags[i].rm_so >= 0; i++)
 	{
 		b = bags[i].rm_so; e = bags[i].rm_eo;
-		printf("%d: %.*s\n", i, e - b, string + b);
 	}
 	
 	subs_br = calloc(strlen(subs) + strlen(string) * MAX_BACKREF, sizeof(char));
@@ -65,7 +63,6 @@ int main(int argc, char **argv)
 	se = 0;
 	while(subs[i] != '\0')
 	{
-		printf("%c: ", subs[i]);
 		if(subs[i] == '\\')
 		{
 			if(subs[i+1] == '\\')
@@ -74,7 +71,6 @@ int main(int argc, char **argv)
 				strncat(subs_br, subs + sb, se - sb);
 				sb = i + 2;
 				i += 2;
-				printf("%s\n", subs_br);
 				continue;
 			}
 			else if(isdigit(subs[i+1]))
@@ -94,17 +90,13 @@ int main(int argc, char **argv)
 				strncat(subs_br, string + b, e - b);
 				sb = i + 2;
 				i += 2;
-				printf("%s\n", subs_br);
 				continue;
 			}
 		}
 		i++;
-		printf("%s\n", subs_br);
 	}
 	se = i;
 	strncat(subs_br, subs + sb, se - sb);
-
-	printf("%s\n", subs_br);
 
 	out = calloc(strlen(string) + strlen(subs_br), sizeof(char));
 	if(out == NULL)
