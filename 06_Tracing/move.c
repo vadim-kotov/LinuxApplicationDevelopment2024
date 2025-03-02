@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <errno.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define SUCCESS 0
 #define NOARG_ERR 1
@@ -10,6 +13,9 @@
 #define FCLOSE_ERR 5
 #define REMOVEFILE_ERR 6
 
+#define SRCFD 100
+#define DESTFD 101
+
 void usage(char *prog)
 {
 	fprintf(stderr, "%s: Make file copy\n"\
@@ -18,9 +24,10 @@ void usage(char *prog)
 
 int main(int argc, char **argv)
 {
-	FILE *src, *dest;
 	char ch;
 	char *infile = argv[1], *outfile = argv[2];
+	int srcfd, destfd;
+	ssize_t n;
 
 	if(argc < 3)
 	{
@@ -29,55 +36,65 @@ int main(int argc, char **argv)
 		return NOARG_ERR;
 	}
 
-	src = fopen(argv[1], "r");
-	if(src == NULL)
+	srcfd = open(argv[1], O_RDONLY);
+	if(srcfd == -1)
 	{
 		perror("Source file opening error ");
 		return FOPEN_ERR;
 	}
 
-	dest = fopen(argv[2], "w");
-	if(dest == NULL)
+	destfd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC);
+	if(destfd == -1)
 	{
 		perror("Destination file opening error");
-		fclose(src);
+		close(srcfd);
 		return FOPEN_ERR;
 	}
 
-	while((ch = fgetc(src)) != EOF)
+	if(srcfd != SRCFD)
 	{
-		if((fputc(ch, dest)) == EOF)
+		dup2(srcfd, SRCFD);
+		close(srcfd);
+	}
+	if(destfd != DESTFD)
+	{
+		dup2(destfd, DESTFD);
+		close(destfd);
+	}
+
+	while((n = read(SRCFD, &ch, sizeof(char))) > 0)
+	{
+		if(write(DESTFD, &ch, sizeof(char)) == -1)
 		{
-			ferror(dest);
 			perror("Writing to file error ");
-			fclose(src);
-			fclose(dest);
+			close(SRCFD);
+			close(DESTFD);
 	
 			unlink(outfile);
 
 			return WRITEFILE_ERR;
 		}
 	}
-	if(ferror(src))
+	if(n == -1)
 	{
 		perror("Reading file error ");
-		fclose(src);
-		fclose(dest);
+		close(SRCFD);
+		close(DESTFD);
 
 		unlink(outfile);
 
 		return READFILE_ERR;
 	}
 
-	if(fclose(src))
+	if(close(SRCFD) == -1)
 	{
 		perror("Source file close error ");
-		fclose(dest);
+		close(DESTFD);
 		unlink(outfile);
 
 		return FCLOSE_ERR;
 	}
-	if(fclose(dest))
+	if(close(DESTFD) == -1)
 	{
 		perror("Destination file close error ");
 		return FCLOSE_ERR;
