@@ -96,11 +96,11 @@ int main()
 
 		if(isupper(algin[0]))
 		{
-			flags = RHPR_HEX;
+			flags = RHPR_BASE64;
 		}
 		else
 		{
-			flags = RHPR_BASE64;
+			flags = RHPR_HEX;
 		}
 
 		arg = strtok(NULL, " \n");
