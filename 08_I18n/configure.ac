@@ -13,7 +13,7 @@ ALL_LINGUAS="ru"
 
 # Checks for programs.
 AC_PROG_CC
-IT_PROG_INTLTOOL
+IT_PROG_INTLTOOL([0.35.0])
 
 # Checks for libraries.
 

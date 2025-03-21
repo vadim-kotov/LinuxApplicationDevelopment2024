@@ -13,7 +13,7 @@ int main()
 	int low = 1;
 	int high = 99;
 	int guess;
-	char resp[2], in;
+	char in[3]; // 2 for UTF-8 char & 1 for '\0'
 
 	setlocale(LC_ALL, "");
 	bindtextdomain(PACKAGE, LOCALEDIR);
@@ -26,15 +26,13 @@ int main()
 		guess = (low + high) / 2;
 
 		printf(_("Is your number bigger than %d? (y/n): "), guess);
-		scanf(" %c", &in);
-		resp[0] = in;
-		resp[1] = '\0';
+		scanf(" %3s", in);
 
-		if (!strcmp(resp, _("y")))
+		if (!strcmp(in, _("y")))
 		{
 			low = guess + 1;
 		} 
-		else if (!strcmp(resp, _("n")))
+		else if (!strcmp(in, _("n")))
 		{
 			high = guess - 1;
 		} 
