@@ -1,0 +1,65 @@
+--- lab1_s.c	2025-03-27 19:09:29.933601079 +0300
++++ lab2_s.c	2025-03-27 19:09:41.618389901 +0300
+@@ -27,6 +27,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <time.h>
++#include <string.h>
+ 
+ int init_parent(int **parent, int size)
+ {
+@@ -101,14 +102,24 @@
+ 	int i, j;
+ 	struct Wall tmp_wall;
+ 	int N, grid_size, wall_num;
++	char wallch, flourch;
+ 	
+-	if(argc < 2)
++	if(argc < 3)
+ 	{
+-		fprintf(stderr, "Usage: %s <size>\n", argv[0]);
++		fprintf(stderr, "Usage: %s <<flour char><wall char>> <size>\n", argv[0]);
+ 		return 1;
+ 	}
+ 
+-	N = atoi(argv[1]);
++	if(strlen(argv[1]) < 2)
++	{
++		fprintf(stderr, "Second arg must contain 2 chars\n");
++		return 1;
++	}
++
++	flourch = argv[1][0];
++	wallch = argv[1][1];
++
++	N = atoi(argv[2]);
+ 	if(N < 1)
+ 	{
+ 		fprintf(stderr, "Size must be greater than 1\n");
+@@ -137,7 +148,7 @@
+ 		}
+ 		for (j = 0; j < grid_size; j++)
+ 		{
+-			maze[i][j] = '#';
++			maze[i][j] = wallch;
+ 		}
+ 	}
+ 
+@@ -145,7 +156,7 @@
+ 	{
+ 		for (j = 0; j < N; j++)
+ 		{
+-			maze[2*i + 1][2*j + 1] = '.';
++			maze[2*i + 1][2*j + 1] = flourch;
+ 		}
+ 	}
+ 
+@@ -211,7 +222,7 @@
+ 		// связности, то стена 'проламывается'
+ 		if (union_sets(parent, a, b))
+ 		{
+-			maze[walls[i].x][walls[i].y] = '.';
++			maze[walls[i].x][walls[i].y] = flourch;
+ 		}
+ 	}
+ 

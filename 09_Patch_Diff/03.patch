@@ -1,0 +1,44 @@
+--- lab2_s.c	2025-03-27 19:09:41.618389901 +0300
++++ lab3_s.c	2025-03-27 19:09:52.567112473 +0300
+@@ -103,23 +103,26 @@
+ 	struct Wall tmp_wall;
+ 	int N, grid_size, wall_num;
+ 	char wallch, flourch;
++	unsigned int seed;
+ 	
+-	if(argc < 3)
++	if(argc < 4)
+ 	{
+-		fprintf(stderr, "Usage: %s <<flour char><wall char>> <size>\n", argv[0]);
++		fprintf(stderr, "Usage: %s <seed> <<flour char><wall char>> <size>\n", argv[0]);
+ 		return 1;
+ 	}
+ 
+-	if(strlen(argv[1]) < 2)
++	seed = atoi(argv[1]);
++
++	if(strlen(argv[2]) < 2)
+ 	{
+ 		fprintf(stderr, "Second arg must contain 2 chars\n");
+ 		return 1;
+ 	}
+ 
+-	flourch = argv[1][0];
+-	wallch = argv[1][1];
++	flourch = argv[2][0];
++	wallch = argv[2][1];
+ 
+-	N = atoi(argv[2]);
++	N = atoi(argv[3]);
+ 	if(N < 1)
+ 	{
+ 		fprintf(stderr, "Size must be greater than 1\n");
+@@ -128,7 +131,7 @@
+ 
+ 	grid_size = 2 * N + 1;
+ 
+-	srand(time(NULL));
++	srand(seed);
+ 
+ 	//Закрытый лабиринт
+ 	maze = (char **)calloc(grid_size, sizeof(char *));

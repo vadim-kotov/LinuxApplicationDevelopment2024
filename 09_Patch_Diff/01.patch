@@ -1,0 +1,191 @@
+--- lab0_s.c	2025-03-26 15:54:30.080323953 +0300
++++ lab1_s.c	2025-03-27 19:09:29.933601079 +0300
+@@ -28,12 +28,20 @@
+ #include <stdlib.h>
+ #include <time.h>
+ 
+-void init_parent(int *parent)
++int init_parent(int **parent, int size)
+ {
+-	for (int i = 0; i < 36; i++)
++	*parent = (int *)malloc(size * sizeof(int));
++	if(*parent == NULL)
+ 	{
+-		parent[i] = i;
++		perror("Memory allocation error: ");
++		return 1;
++	}
++	for (int i = 0; i < size; i++)
++	{
++		(*parent)[i] = i;
+ 	}
++
++	return 0;
+ }
+ 
+ // Поиск корневой вершины компоненты связности.
+@@ -76,63 +84,111 @@
+ 	int a, b;
+ };
+ 
+-int main() {
+-	char maze[13][13];
+-	int parent[36];
+-	struct Wall walls[60];
++void maze_free(char **maze, int N)
++{
++	for(int i = 0; i < N; i++)
++	{
++		free(maze[i]);
++	}
++	free(maze);
++}
++
++int main(int argc, char **argv) {
++	char **maze;
++	int *parent;
++	struct Wall *walls;
+ 	int k;
+ 	int i, j;
+ 	struct Wall tmp_wall;
++	int N, grid_size, wall_num;
++	
++	if(argc < 2)
++	{
++		fprintf(stderr, "Usage: %s <size>\n", argv[0]);
++		return 1;
++	}
++
++	N = atoi(argv[1]);
++	if(N < 1)
++	{
++		fprintf(stderr, "Size must be greater than 1\n");
++		return 1;
++	}
++
++	grid_size = 2 * N + 1;
+ 
+ 	srand(time(NULL));
+ 
+ 	//Закрытый лабиринт
+-	for (i = 0; i < 13; i++)
++	maze = (char **)calloc(grid_size, sizeof(char *));
++	if(maze == NULL)
+ 	{
+-		for (j = 0; j < 13; j++)
++		perror("Memory allocation error: ");
++		return 1;
++	}
++	for (i = 0; i < grid_size; i++)
++	{
++		maze[i] = (char *)malloc(grid_size * sizeof(char));
++		if(maze[i] == NULL)
++		{
++			perror("Memory allocation error: ");
++			maze_free(maze, N);
++			return 1;
++		}
++		for (j = 0; j < grid_size; j++)
+ 		{
+ 			maze[i][j] = '#';
+ 		}
+ 	}
+ 
+-	for (i = 0; i < 6; i++)
++	for (i = 0; i < N; i++)
+ 	{
+-		for (j = 0; j < 6; j++)
++		for (j = 0; j < N; j++)
+ 		{
+ 			maze[2*i + 1][2*j + 1] = '.';
+ 		}
+ 	}
+ 
+ 	// Инициализация массива стен
++	wall_num = 2 * N * (N - 1);
++	walls = (struct Wall *)malloc(wall_num * sizeof(struct Wall));
++	if(walls == NULL)
++	{
++		maze_free(maze, N);
++		free(walls);
++		perror("Memory allocation error: ");
++		return 1;
++	}
++
+ 	k = 0;
+ 	// Вертикальные стены
+-	for (i = 0; i < 6; i++)
++	for (i = 0; i < N; i++)
+ 	{
+-		for (j = 0; j < 5; j++)
++		for (j = 0; j < N - 1; j++)
+ 		{
+ 			walls[k].x = 2*i + 1;
+ 			walls[k].y = 2*j + 2;
+-			walls[k].a = i*6 + j;
+-			walls[k].b = i*6 + j + 1;
++			walls[k].a = i*N + j;
++			walls[k].b = i*N + j + 1;
+ 			k++;
+ 		}
+ 	}
+ 
+ 	// Горизонтальные стены
+-	for (i = 0; i < 5; i++)
++	for (i = 0; i < N - 1; i++)
+ 	{
+-		for (j = 0; j < 6; j++)
++		for (j = 0; j < N; j++)
+ 		{
+ 			walls[k].x = 2*i + 2;
+ 			walls[k].y = 2*j + 1;
+-			walls[k].a = i*6 + j;
+-			walls[k].b = (i+1)*6 + j;
++			walls[k].a = i*N + j;
++			walls[k].b = (i+1)*N + j;
+ 			k++;
+ 		}
+ 	}
+ 
+ 	// Перемешивание стен в массиве
+-	for (i = 59; i > 0; i--)
++	for (i = wall_num - 1; i > 0; i--)
+ 	{
+ 		int j = rand() % (i + 1);
+ 		tmp_wall = walls[i];
+@@ -141,8 +197,13 @@
+ 	}
+ 
+ 	// Работа алгоритма Крускала
+-	init_parent(parent);
+-	for (i = 0; i < 60; i++)
++	if(init_parent(&parent, N * N))
++	{
++		maze_free(maze, N);
++		free(walls);
++		return 1;
++	}
++	for (i = 0; i < wall_num; i++)
+ 	{
+ 		int a = walls[i].a;
+ 		int b = walls[i].b;
+@@ -155,14 +216,17 @@
+ 	}
+ 
+ 	// Вывод на экран
+-	for (i = 0; i < 13; i++)
++	for (i = 0; i < grid_size; i++)
+ 	{
+-		for (j = 0; j < 13; j++)
++		for (j = 0; j < grid_size; j++)
+ 		{
+ 			putchar(maze[i][j]);
+ 		}
+ 		putchar('\n');
+ 	}
++	maze_free(maze, N);
++	free(walls);
++	free(parent);
+ 
+ 	return 0;
+ }
