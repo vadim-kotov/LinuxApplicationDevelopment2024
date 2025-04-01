@@ -1,5 +1,9 @@
-TESTS = dummy
-bin_PROGRAMS = dummy
+TESTS_ENVIRONMENT = CK_VERBOSITY=$(CK_VERBOSITY)
+TESTS = upstream
+check_PROGRAMS = upstream
 
-AM_CFLAGS = -I$(top_builddir)/src
-LDADD = $(top_builddir)/src/libbuf.la
+%.c: %.ts
+	checkmk $< > $@
+
+AM_CFLAGS = -I$(top_builddir)/src @CHECK_CFLAGS@
+LDADD = $(top_builddir)/src/libbuf.la @CHECK_LIBS@

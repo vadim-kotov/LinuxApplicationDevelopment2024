@@ -28,6 +28,7 @@
 #define LIBBUF_H
 
 #include <stddef.h>
+#include <stdlib.h>
 
 #ifndef BUF_INIT_CAPACITY
 #  define BUF_INIT_CAPACITY 8
@@ -83,6 +84,6 @@ struct buf {
 #define buf_clear(v) \
     ((v) ? (buf_ptr((v))->size = 0) : 0)
 
-static void * buf_grow1(void *v, size_t esize, ptrdiff_t n);
+void * buf_grow1(void *v, size_t esize, ptrdiff_t n);
 
 #endif
