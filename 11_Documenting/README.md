@@ -1,6 +1,6 @@
 Сборка и установка: 
 
-    autoreconf -fisv && ./configure --prefix YOUR_PATH && make && make install
+    autoreconf -fisv && ./configure --prefix=YOUR_PATH --disable-doxygen-pdf --disable-doxygen-ps && make && make install
 
 Запуск: 
 
@@ -9,6 +9,14 @@
 Обновление перевода: 
 
     make -C po update-po
+
+Читать man:
+
+    man .YOUR_PATH/share/doc/guess/man/man1/guess.1
+
+Поднять сервер с документацией:
+
+    make http
 
 Удаление генератов: 
 
