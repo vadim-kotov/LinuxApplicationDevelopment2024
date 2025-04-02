@@ -4,7 +4,7 @@
 AC_PREREQ([2.69])
 AC_INIT([Number guesser], [0.1], [vadia55@list.ru])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
-AM_GNU_GETTEXT(external)
+AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.21)
 AC_CONFIG_SRCDIR([src/guess.c])
 AC_CONFIG_HEADERS([config.h])
