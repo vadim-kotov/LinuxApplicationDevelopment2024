@@ -13,7 +13,7 @@ bin_PROGRAMS = guess
 
 @DX_RULES@
 
-all-local: doxygen-doc man
+all-local: doxygen-doc $(man_MANS)
 
 checklog: check
 	cat tests/*.log
@@ -24,18 +24,26 @@ endif
 gcov: check
 	gcov -o src libroman -t -k -b | egrep -v '[[:digit:]]:[ /][*]'
 
-man: guess
-	mkdir -p doxygen-doc/man/man1
-	help2man -N ./$< > doxygen-doc/man/man1/$<.1
+man_MANS=man/guess.1
 
-install-data-local:
-	mkdir -p $(DESTDIR)/$(docdir)
-	cp -a doxygen-doc/html $(DESTDIR)/$(docdir)
-	cp -a doxygen-doc/man $(DESTDIR)/$(docdir)
+man/guess.1: guess
+	mkdir -p man
+	help2man -N ./$< > man/$<.1
 
-uninstall-local:
-	rm -rf $(DESTDIR)/$(docdir)/html
-	rm -rf $(DESTDIR)/$(docdir)/man
+CLEANFILES = $(man_MANS)
+
+#man: guess
+#	mkdir -p doxygen-doc/man/man1
+#	help2man -N ./$< > doxygen-doc/man/man1/$<.1
+
+#install-data-local:
+#	mkdir -p $(DESTDIR)/$(docdir)
+#	cp -a doxygen-doc/html $(DESTDIR)/$(docdir)
+#	cp -a doxygen-doc/man $(DESTDIR)/$(docdir)
+
+#uninstall-local:
+#	rm -rf $(DESTDIR)/$(docdir)/html
+#	rm -rf $(DESTDIR)/$(docdir)/man
 
 http:	doxygen-doc
 	python3 -m http.server --directory $</html 5000
