@@ -40,7 +40,7 @@
 
 Читать `man`:
 
-    man .YOUR_PATH/share/doc/guess/man/man1/guess.1
+    man ./YOUR_PATH/share/doc/guess/man/man1/guess.1
 
 Поднять сервер с документацией:
 
