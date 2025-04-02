@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  08_I18n\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-01 21:17+0300\n"
+"POT-Creation-Date: 2025-04-02 18:22+0300\n"
 "PO-Revision-Date: 2025-03-21 05:29+0300\n"
 "Last-Translator: vadim <vadia55@list.ru>\n"
 "Language-Team: Russian\n"
@@ -19,17 +19,17 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../src/guess.c:39
+#: ../src/guess.c:38
 #, c-format
 msgid "Usage: %s [OPTION]\n"
 msgstr "Использование: %s [ПАРАМЕТР]\n"
 
-#: ../src/guess.c:40
+#: ../src/guess.c:39
 #, c-format
 msgid "Interactive number guessing game.\n"
 msgstr "Интерактивная игра, угадывающая числа\n"
 
-#: ../src/guess.c:41
+#: ../src/guess.c:40
 #, c-format
 msgid ""
 "Choose number between 1 and 100 and answer questions with only 'yes' or "
@@ -39,69 +39,68 @@ msgstr ""
 "Загадайте число между 1 и 100 и отвечайте на вопросы только 'да' или 'нет'\n"
 "\n"
 
-#: ../src/guess.c:42
+#: ../src/guess.c:41
 #, c-format
 msgid "Options:\n"
 msgstr "Параметры:\n"
 
-#: ../src/guess.c:43
+#: ../src/guess.c:42
 #, c-format
 msgid "  -r             switch to Roman numerals\n"
 msgstr "  -r             переключить на Римские цифры\n"
 
-#: ../src/guess.c:44
+#: ../src/guess.c:43
 #, c-format
 msgid "  -h, --help     show this help\n"
 msgstr "  -h, --help     показать эту справку\n"
 
-#: ../src/guess.c:45
+#: ../src/guess.c:44
 #, c-format
 msgid "      --version  show version\n"
 msgstr "      --version  показать версию программы\n"
 
-#: ../src/guess.c:67
-msgid "Invalid"
-msgstr "Недопустимое число"
-
-#: ../src/guess.c:143
+#: ../src/guess.c:101
 #, c-format
 msgid "Think of a number between 1 and 100\n"
 msgstr "Загадайте число от 1 до 100\n"
 
-#: ../src/guess.c:149
+#: ../src/guess.c:107
 #, c-format
 msgid "Is your number bigger than "
 msgstr "Ваше число больше "
 
-#: ../src/guess.c:151
+#: ../src/guess.c:109
 #, c-format
 msgid "? (y/n): "
 msgstr "? (д/н): "
 
-#: ../src/guess.c:159
+#: ../src/guess.c:117
 #, c-format
 msgid "Input read error\n"
 msgstr "Ошибка чтения ввода\n"
 
-#: ../src/guess.c:165
+#: ../src/guess.c:123
 #, c-format
 msgid "Input stopped by user\n"
 msgstr "Ввод остановлен пользователем\n"
 
-#: ../src/guess.c:171
+#: ../src/guess.c:129
 msgid "y"
 msgstr "д"
 
-#: ../src/guess.c:175
+#: ../src/guess.c:133
 msgid "n"
 msgstr "н"
 
-#: ../src/guess.c:181
+#: ../src/guess.c:139
 #, c-format
 msgid "Please, type 'y'(yes) or 'n'(no).\n"
 msgstr "Пожалуйста, введите 'д'(да) или 'н'(нет)\n"
 
-#: ../src/guess.c:189
+#: ../src/guess.c:147
 #, c-format
 msgid "Your number is: "
 msgstr "Ваше число: "
+
+#~ msgid "Invalid"
+#~ msgstr "Недопустимое число"

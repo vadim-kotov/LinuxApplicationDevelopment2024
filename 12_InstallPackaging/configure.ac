@@ -7,7 +7,7 @@ AM_INIT_AUTOMAKE([foreign subdir-objects])
 DX_INIT_DOXYGEN([guess])
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_REQUIRE_VERSION(0.21)
-AC_CONFIG_SRCDIR([src/guess.c])
+AC_CONFIG_SRCDIR([src])
 AC_CONFIG_HEADERS([config.h])
 AC_SUBST(GETTEXT_PACKAGE, "$PACKAGE")
 ALL_LINGUAS="ru"
@@ -19,6 +19,17 @@ AC_CHECK_PROG([PYTHON_CHECK], [python3], [yes], [no])
 AS_IF([test "x$PYTHON_CHECK" = "xno"],
       [AC_MSG_ERROR([Python 3 is required to generate roman table])])
 
+# Joint pkgconfig library/include check and variable definition.
+PKG_CHECK_MODULES([CHECK],[check])
+AC_SUBST(CK_VERBOSITY, verbose)
+AC_ARG_VAR(CK_VERBOSITY, [Default: "verbose", can be "silent", "minimal" or "normal")])
+
+#Enable gcov
+AC_ARG_ENABLE([gcov],
+	      [AS_HELP_STRING([--enable-gcov], [use Gcov to test the test suite])],
+	      [], [enable_gcov=no])
+AM_CONDITIONAL([COND_GCOV],[test '!' "$enable_gcov" = no])
+
 # Checks for libraries.
 
 # Checks for header files.
@@ -27,5 +38,5 @@ AS_IF([test "x$PYTHON_CHECK" = "xno"],
 
 # Checks for library functions.
 
-AC_CONFIG_FILES([Makefile po/Makefile.in src/Makefile Doxyfile])
+AC_CONFIG_FILES([Makefile po/Makefile.in src/Makefile Doxyfile tests/Makefile])
 AC_OUTPUT
